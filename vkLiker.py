@@ -61,24 +61,55 @@ def main(a):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Likes VKontakte posts on specified wall")
-    parser.add_argument("login", type=str, help="Vkontakte login")
-    parser.add_argument("password", type=str, help="Vkontakte password")
-    parser.add_argument("wall_id", type=int, help="Vkontakte wall id")
-    parser.add_argument("-s", "--start", type=int, help="posts from this time will be processed (in unix time format) "
-                                                        "(defaults to start of era)", default=0)
-    parser.add_argument("-e", "--end", type=int, help="posts before this time will be processed (in unix time format) "
-                                                      "(defaults to now)", default=int(time.time()))
-    parser.add_argument("-r", "--reauth", help="Forces re-authentication", action="store_true")
-    parser.add_argument("--token-only", help="Enables the optimal authentication strategy is only access_token is "
-                                             "needed (enabled default)", action="store_true", default=True)
-    parser.add_argument("-c", "--count", type=int, help="Max count of latest posts that will be processed "
-                                                        "(defaults to all posts, may be dangerous)", default=-1)
-    parser.add_argument("-o", "--offset", type=int, help="Offset of posts that will be processed (defaults to 0)",
+    parser = argparse.ArgumentParser(
+        description="Likes VKontakte posts on specified wall")
+
+    parser.add_argument("login",
+                        type=str,
+                        help="Vkontakte login")
+    parser.add_argument("password",
+                        type=str,
+                        help="Vkontakte password")
+    parser.add_argument("wall_id",
+                        type=int,
+                        help="Vkontakte wall id")
+
+    parser.add_argument("-s", "--start",
+                        type=int,
+                        help="posts from this time will be processed "
+                             "(in unix time format) (defaults to start of era)",
                         default=0)
-    parser.add_argument("-t", "--timeout", type=int, help="Timeout of post liking in seconds (defaults to 20)",
+    parser.add_argument("-e", "--end",
+                        type=int,
+                        help="posts before this time will be processed "
+                             "(in unix time format) (defaults to now)",
+                        default=int(time.time()))
+    parser.add_argument("-r", "--reauth",
+                        help="Forces re-authentication",
+                        action="store_true")
+    parser.add_argument("--token-only",
+                        help="Enables the optimal authentication strategy is only access_token is needed "
+                             "(enabled default)",
+                        action="store_true",
+                        default=True)
+    parser.add_argument("-c", "--count",
+                        type=int,
+                        help="Max count of latest posts that will be processed "
+                             "(defaults to all posts, may be dangerous)",
+                        default=-1)
+    parser.add_argument("-o", "--offset",
+                        type=int,
+                        help="Offset of posts that will be processed "
+                             "(defaults to 0)",
+                        default=0)
+    parser.add_argument("-t", "--timeout",
+                        type=int,
+                        help="Timeout of post liking in seconds "
+                             "(defaults to 20)",
                         default=20)
+
     args = parser.parse_args()
+
     if 1 > args.count > 100 and args.count != -1:
         raise ValueError("Count must be greater than or equal to 1 and must not exceed 100")
     if args.offset < 0:
